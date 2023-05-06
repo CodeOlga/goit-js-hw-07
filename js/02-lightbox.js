@@ -2,7 +2,6 @@ import { galleryItems } from './gallery-items.js';
 const galleryList = document.querySelector('.gallery');
 const galleryMarkup = createGalleryMarkup(galleryItems);
 galleryList.insertAdjacentHTML('beforeend', galleryMarkup);
-galleryList.addEventListener('click', onGalleryListClick);
 
 function createGalleryMarkup(gallery) {
   return gallery
@@ -18,17 +17,8 @@ function createGalleryMarkup(gallery) {
     .join('');
 }
 
-function onGalleryListClick(e) {
-  e.preventDefault();
-
-  if (e.target.nodeName !== 'IMG') {
-    return;
-  }
-
-  //library
-  var lightbox = new SimpleLightbox('.gallery a', {
-    captionsData: 'alt',
-    captionPosition: 'bottom',
-    captionDelay: 250,
-  });
-}
+//library
+new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
