@@ -1,10 +1,10 @@
 import { galleryItems } from './gallery-items.js';
-// Change code below this line
 const galleryList = document.querySelector('.gallery');
 const galleryMarkup = createGalleryMarkup(galleryItems);
 galleryList.insertAdjacentHTML('beforeend', galleryMarkup);
 galleryList.addEventListener('click', onGalleryListClick);
 
+//render markup based on data array
 function createGalleryMarkup(gallery) {
   return gallery
     .map(({ preview, original, description }) => {
@@ -24,17 +24,40 @@ function createGalleryMarkup(gallery) {
 }
 
 function onGalleryListClick(e) {
+  //disable page reload
   e.preventDefault();
 
+  //disable click not on img
   if (e.target.nodeName !== 'IMG') {
     return;
   }
 
-  // if (!e.target.classList.contains('gallery__image')) {
-  //   return;
-  // }
-  console.log(e.currentTarget);
-  console.log(e.target);
-}
+  // searching by class
+  //   if (!e.target.classList.contains('gallery__image')) {
+  //     return;
+  //   }
 
-console.log(galleryItems);
+  //big img access
+  const selectedImg = e.target.dataset.source;
+
+  //library
+  const instance = basicLightbox.create(
+    `<img src="${selectedImg}" width="800" height="600"/>`,
+    {
+      onShow: instance => {
+        window.addEventListener('keydown', closeByEsc);
+      },
+      onClose: instance => {
+        window.removeEventListener('keydown', closeByEsc);
+      },
+    }
+  );
+
+  instance.show();
+
+  function closeByEsc({ code }) {
+    if (code === 'Escape') {
+      instance.close();
+    }
+  }
+}
